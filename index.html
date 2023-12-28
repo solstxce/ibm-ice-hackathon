@@ -69,9 +69,24 @@
                 <a href="#newsletter" class="nav__link scroll-link">Subscribe</a>
               </li>
 
+              
+              <!-- HTML code for the login button -->
               <li class="nav__item">
-                <a href="#" class="nav__link">Login</a>
+                <a href="#" class="nav__link" id="loginButton">Login</a>
               </li>
+
+              <!-- JavaScript code to handle the click event and redirect to the login page -->
+              <script>
+                // Get the login button element by its ID
+                var loginButton = document.getElementById('loginButton');
+
+                // Add a click event listener to the login button
+                loginButton.addEventListener('click', function() {
+                  // Redirect to the login page when the button is clicked
+                  window.location.href = 'login.html';
+                });
+              </script>
+
 
               <li class="nav__item">
                 <a href="#" class="nav__link">Register</a>
