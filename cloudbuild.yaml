@@ -1,0 +1,9 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/fast-environs-409507/e-commerce-zero:$SHORT_SHA', '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/fast-environs-409507/e-commerce-zero:$SHORT_SHA']
+- name: 
+logsBucket: 'gs://ibm-ice-hack'
+options:
+   logging: GCS_ONLY
