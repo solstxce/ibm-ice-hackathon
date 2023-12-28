@@ -3,75 +3,157 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Page</title>
+  <title>Glassmorphic Login</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana,sansserif;
-      background-image: url('Banner1.jpg'); /* Replace with your background image */
-      background-size: cover;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100vh;
+      background: url('Banner0.jpg') center/cover fixed;
+      overflow: hidden;
     }
 
-    form {
-      background-color: rgba(255, 255, 255, 0.2); /* Adjust transparency */
-      backdrop-filter: blur(10px); /* Adjust blur intensity */
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      width: 300px;
-      color: #fff; /* Adjust text color */
+    .login-container {
+      background: rgba(10, 10, 10, 1);
+      border-radius: 15px;
+      backdrop-filter: blur(25px);
+      padding: 80px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      color: #333;
+      text-align: center;
+      margin-left: 50%; /* Adjust margin-left to move the login box */
     }
 
-    label {
-      display: block;
-      margin-bottom: 8px;
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    input {
+    .form-input {
       width: 100%;
-      padding: 8px;
-      margin-bottom: 16px;
-      box-sizing: border-box;
-    }
-
-    button {
-      background-color: #4caf50;
-      color: #fff;
+      margin: 10px 0;
       padding: 10px;
       border: none;
-      border-radius: 4px;
+      border-radius: 8px;
+      backdrop-filter: blur(5px);
+      background: rgba(255, 255, 255, 0.8);
+      color: #333;
+      outline: none;
+    }
+
+    .form-button {
+      width: 100%;
+      margin: 12px 0;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      backdrop-filter: blur(5px);
+      background: linear-gradient(45deg, #ff6b6b, #556cf6);
+      color: #fff;
       cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .form-button:hover {
+      background: linear-gradient(45deg, #ff8c8c, #7189ff);
+    }
+
+    .form-link {
+      color: #fff;
+      text-decoration: none;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .form-link:hover {
+      text-decoration: underline;
+    }
+
+    .google-login-button {
+      background-color: #4285F4;
+      color: #fff;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .google-login-button:hover {
+      background-color: #317ae2;
+    }
+
+    h2 {
+      color: #fff;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: -1;
     }
   </style>
 </head>
 <body>
 
-  <form id="loginForm">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required>
+  <div class="overlay"></div>
+  <div class="login-container">
+    <h2>    Welcome   to   zer<span>0</span>   Login    </h2>
+    <form class="login-form">
+      <input class="form-input" type="text" placeholder="Username" required>
+      <input class="form-input" type="password" placeholder="Password" required>
+      <button class="form-button" type="submit">Login</button>
+    </form>
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
+    <!-- Google Login Button -->
+    <button class="google-login-button" onclick="handleGoogleLogin()">Login with Google</button>
 
-    <button type="button" onclick="login()">Login</button>
-  </form>
+    <!-- Forgot Password Link -->
+    <div>
+      <a class="form-link" href="#">Forgot password?</a>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.4.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.4.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.4.1/firebase-firestore.js"></script>
 
   <script>
-    function login() {
-      // Simple client-side validation
-      var username = document.getElementById('username').value;
-      var password = document.getElementById('password').value;
+    // Replace this configuration with your actual Firebase configuration
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
 
-      if (username === 'demo' && password === 'password') {
-        // Redirect to the main index page after successful login
-        window.location.href = 'index.html'; // Replace with your actual main index page
-      } else {
-        alert('Invalid credentials. Please try again.'); // Replace with your logic for unsuccessful login
-      }
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    function handleGoogleLogin() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider)
+        .then((result) => {
+          // Handle successful login
+          console.log(result.user);
+        })
+        .catch((error) => {
+          // Handle errors
+          console.error(error);
+        });
     }
   </script>
 
