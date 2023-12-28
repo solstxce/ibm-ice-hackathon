@@ -6,8 +6,9 @@
   <title>Login Page</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-image: url('Banner1.jpg'); /* Replace with your background image */
+      background-size: cover;
       margin: 0;
       display: flex;
       align-items: center;
@@ -16,11 +17,13 @@
     }
 
     form {
-      background-color: #fff;
+      background-color: rgba(255, 255, 255, 0.2); /* Adjust transparency */
+      backdrop-filter: blur(10px); /* Adjust blur intensity */
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       width: 300px;
+      color: #fff; /* Adjust text color */
     }
 
     label {
@@ -64,7 +67,8 @@
       var password = document.getElementById('password').value;
 
       if (username === 'demo' && password === 'password') {
-        alert('Login successful!'); // Replace with your logic for successful login
+        // Redirect to the main index page after successful login
+        window.location.href = 'index.html'; // Replace with your actual main index page
       } else {
         alert('Invalid credentials. Please try again.'); // Replace with your logic for unsuccessful login
       }
