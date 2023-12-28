@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: e-commerce-zero
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: e-commerce-zero
+  template:
+    metadata:
+      labels:
+        app: e-commerce-zero
+    spec:
+      containers:
+      - name: e-commerce-zero
+        image: gcr.io/fast-environs-409507/e-commerce-zero:latest
+        ports:
+        - containerPort: 80
