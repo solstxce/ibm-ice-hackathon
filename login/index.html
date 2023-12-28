@@ -191,6 +191,12 @@
     const errorMessage = error.message;
 
   });
+  auth().onAuthStateChanged(user => {
+  console.log(user);
+  if(user) {
+    window.location = '/'; //After successful login, user will be redirected to home.html
+  }
+});
   })
 
 </script>
