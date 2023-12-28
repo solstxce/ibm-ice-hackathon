@@ -872,6 +872,14 @@ h4 {
   height: 100%;
   background: rgba(0, 0, 0, 0.4);
 }
+.glass-container {
+  background: rgba(255, 255, 255, 0.1); /* Adjust transparency */
+  backdrop-filter: blur(10px); /* Adjust blur intensity */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adjust shadow */
+  padding: 20px; /* Adjust padding */
+  margin: 20px; /* Adjust margin */
+}
 
 .offer__container {
   position: absolute;
