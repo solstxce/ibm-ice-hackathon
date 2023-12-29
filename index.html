@@ -3,6 +3,12 @@
 
 <head>
   <meta charset="UTF-8" />
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Google Fonts -->
@@ -15,23 +21,80 @@
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="styles.css" />
   <style>
-    /* Optional: Add some basic styling */
+    /* Your provided CSS */
+    .search {
+        margin: 20px;
+        display: inline-flex;
+        align-items: center;
+        background-color: black;
+        color: black;
+        padding: 10px;
+        border-radius: 40px;
+    }
+
+    .search :is(input, button) {
+        color: inherit;
+        border: none;
+        background: transparent;
+        outline: none;
+        font-size: 14px;
+        /* margin-bottom: 10vh; */
+    }
+
+    .search__input {
+        width: 0;
+        transition: width 0.5s;
+    }
+
+    .search__button {
+        display: grid;
+        place-items: center;
+        width: 25px;
+        height: 25px;
+        cursor: pointer;
+        transition: color 0.25s;
+    }
+
+    .search__button:hover {
+        color: #e3e3e3;
+    }
+
+    .search:focus-within input {
+        width: 180px;
+    }
+
+    ::placeholder {
+        font: inherit;
+        color: black;
+    }
+
+    /* Additional styling for the existing structure */
     .icon__item {
         cursor: pointer;
     }
 
     #searchResults {
-            display: none;
-            position: absolute;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            max-height: 150px;
-            overflow-y: auto;
-            margin-top: 5px; /* Adjust the margin-top as needed */
-        }
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        max-height: 150px;
+        overflow-y: auto;
+        /* margin: 10vh; */
+        margin-top: 80px; /* Adjust the margin-top as needed */
+    }
 
-    #searchInput {
+    #search {
         padding: 5px;
+    }
+
+    .result-item {
+        padding: 8px;
+        cursor: pointer;
+    }
+
+    .result-item:hover {
+        background-color: #f5f5f5;
     }
 </style>
   <title>SHOP</title>
@@ -108,7 +171,7 @@
 
 
               <li class="nav__item">
-                <a href="/register/" class="nav__link">Register</a>
+                <a href="/register/" id="registerBtn" class="nav__link">Register</a>
               </li>
 
 
@@ -123,13 +186,22 @@
                     </svg>
                 </a>
             </div>
+            <!-- <div class="text-white col text-center">
+              <input type="text" id="search" class="search__input text-white" placeholder="Search...." />
+              <a href="#" class="icon__item" id="searchIcon">
+                  <i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i>
+              </a>
+          </div>
+       -->
               <div id="searchResults"></div>
 
-              <a href="#" class="icon__item">
-                <svg>
-                  <use xlink:href="./images/sprite.svg#icon-user"></use>
-                </svg>
-              </a>
+              <div >
+                <a href="#" class="icon__item userInfo">
+                  <svg>
+                    <use xlink:href="./images/sprite.svg#icon-user"></use>
+                  </svg>
+                </a>
+              </div>
 
               <a href="#" class="icon__item">
                 <svg>
@@ -1108,12 +1180,97 @@
 </body>
 </html>
 
-In this example, I've added an input field (<input type="text" id="searchInput">) where users can type their search queries. The recommendations are displayed in a div (<div id="searchResults"></div>) below the input field. The results are filtered based on the user's input and displayed dynamically as they type.
-
-Feel free to customize the styling and behavior based on your requirements.
-<!-- Custom Script -->
+(<input type="text" id="searchInput">) 
   <script src="./js/slider.js"></script>
   <script src="./js/index.js"></script>
+  <!--   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script> -->
+  <script type="module">
+  
+    // Import the functions you need from the SDKs you need
+  
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+    import {getAuth,signInWithPopup,GoogleAuthProvider} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+  
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+  
+    // Your web app's Firebase configuration
+  
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  
+    const firebaseConfig = {
+  
+      apiKey: "AIzaSyDrseXpIg5RIAmLHR2OvpErUpRcvl0OB1A",
+  
+      authDomain: "ibm-ice-hack.firebaseapp.com",
+  
+      projectId: "ibm-ice-hack",
+  
+      storageBucket: "ibm-ice-hack.appspot.com",
+  
+      messagingSenderId: "814588059643",
+  
+      appId: "1:814588059643:web:cb8b4a7c8084593bb7355e",
+  
+      measurementId: "G-9WV91XZ20K"
+  
+    };
+  
+  
+    // Initialize Firebase
+  
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+  // auth.languageCode = 'it';
+  // To apply the default browser preference instead of explicitly setting it.
+    auth.useDeviceLanguage();
+    
+  
+    const provider = new GoogleAuthProvider();
+    const analytics = getAnalytics(app);
+    const googleLogin = document.getElementById("google-login-btn");
+    firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                // User is signed in, display user info
+                displayUserInfo(user);
+                updateAuthButtons(user.displayName);
+            }
+        });
+        function displayUserInfo(user) {
+            var userInfoContainer = document.getElementsByClassName('userInfo');
+            var userDisplayName = user.displayName;
+            var userProfilePic = user.photoURL;
+
+            // Display user info on the page
+            userInfoContainer.innerHTML = `
+                <p>Welcome, ${userDisplayName}!</p>
+                <img id="userProfilePic" src="${userProfilePic}" alt="User Profile Picture">
+            `;
+        }
+
+        function updateAuthButtons(username) {
+          var authButtonsContainer = document.getElementById('loginButton');
+          authButtonsContainer.innerHTML = `<p>${username}</p>`;
+            var loginButtonContainer = document.getElementById('registerBtn')
+            loginButtonContainer.innerHTML = `<button onclick="signOut()">Sign Out</button>`
+
+          }
+
+        function signOut() {
+            firebase.auth().signOut().then(function() {
+                // Sign-out successful.
+                alert("Successfully signed out");
+            }).catch(function(error) {
+                // An error happened.
+                console.error(error.code, error.message);
+            });
+        }
+  
+  </script>
+  
 </body>
 
 </html>

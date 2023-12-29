@@ -184,7 +184,8 @@
   .then((result) => {
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const user = result.user;
-    window.open("/index.html");
+    // window.open("/index.html");
+    window.location.href = '/index.html';
   }).catch((error) => {
     // Handle Errors here.
     const errorCode = error.code;

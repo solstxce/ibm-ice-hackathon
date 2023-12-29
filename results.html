@@ -15,25 +15,22 @@
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="styles.css" />
   <style>
-    /* Optional: Add some basic styling */
-    .icon__item {
-        cursor: pointer;
-    }
-
-    #searchResults {
-            display: none;
-            position: absolute;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            max-height: 150px;
-            overflow-y: auto;
-            margin-top: 5px; /* Adjust the margin-top as needed */
+    /* Your provided CSS */
+    .product {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px;
+            text-align: center;
+            float: left;
+            width: 24%; /* Adjust the width as needed */
         }
 
-    #searchInput {
-        padding: 5px;
-    }
+        .product img {
+            max-width: 100%;
+            height: auto;
+        }
 </style>
+</head>
   <title>SHOP</title>
 </head>
 
@@ -144,26 +141,46 @@
     </div>
 
     <!-- Hero -->
-    <div class="hero">
-      <div class="hero__content container">
-        <h1>
-          <span>Get <span class="color">50%</span> off your first shopping
-            with</span>
-          <span>zer<span class="color">0</span> online shop</span>
-        </h1>
-        <a href="#" class="btn btn-hero">shop now</a>
-      </div>
+    <div id="productGrid"></div>
+    <script>
+      // URL of the JSON file
+      var jsonUrl = 'http://127.0.0.1:5000/scrape_data_men_footwear';
 
-      <a href="#new__arrival" class="goto__next scroll-link">
-        <span>
-          <svg>
-            <use xlink:href="./images/sprite.svg#icon-angle-down"></use>
-          </svg>
-        </span>
-      </a>
-    </div>
-  </header>
+      // Fetch the JSON data
+      fetch(jsonUrl)
+          .then(response => response.json())
+          .then(data => {
+              // Display the JSON data on the page
+              displayProductGrid(data.response);
+          })
+          .catch(error => {
+              console.error('Error fetching JSON:', error);
+          });
 
+      function displayProductGrid(products) {
+          var productGridContainer = document.getElementById('productGrid');
+
+          // Iterate over each product and create a product card
+          products.forEach(product => {
+              var productCard = document.createElement('div');
+              productCard.className = 'product';
+
+              // Create HTML content for each product card
+              var htmlContent = `
+                  <h2>${product.Name}</h2>
+                  <p>Current Price: ${product['Current Price']}</p>
+                  <p>Original Price: ${product['Original Price']}</p>
+                  <p>Rating: ${product.Rating}</p>
+                  <img src="${product['Image URL']}" alt="${product.Name} Image">
+              `;
+
+              productCard.innerHTML = htmlContent;
+
+              // Append the product card to the grid container
+              productGridContainer.appendChild(productCard);
+          });
+      }
+  </script>
   <!-- Main -->
   <main>
     <!-- New Arrival -->
